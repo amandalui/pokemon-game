@@ -56,14 +56,14 @@ squirtle = Pokemon(
     "Squirtle",
     HEALTH,
     "fire",
-    "water",
+    "grass",
     water_attacks)
 
 bulbasaur = Pokemon(
     "Bulbasaur",
     HEALTH,
+    "grass",
     "fire",
-    "water",
     grass_attacks)
 
 flareon = Pokemon(
@@ -76,15 +76,15 @@ flareon = Pokemon(
 vaporeon = Pokemon(
     "Vaporeon",
     HEALTH,
-    "fire",
     "water",
+    "grass",
     water_attacks)
 
 leafeon = Pokemon(
     "Leafeon",
     HEALTH,
+    "grass",
     "fire",
-    "water",
     grass_attacks)
 
 growlithe = Pokemon(
@@ -97,15 +97,15 @@ growlithe = Pokemon(
 magikarp = Pokemon(
     "Magikarp",
     HEALTH,
-    "fire",
     "water",
+    "grass",
     water_attacks)
 
 oddish = Pokemon(
     "Oddish",
     HEALTH,
+    "grass",
     "fire",
-    "water",
     grass_attacks)
 
 ponyta = Pokemon(
@@ -118,15 +118,15 @@ ponyta = Pokemon(
 psyduck = Pokemon(
     "Psyduck",
     HEALTH,
-    "fire",
     "water",
+    "grass",
     water_attacks)
 
 tangela = Pokemon(
     "Tangela",
     HEALTH,
+    "grass",
     "fire",
-    "water",
     grass_attacks)
 
 wild_pokemon = [
@@ -221,6 +221,8 @@ def battle():
         print("\nOppposing " + opponent.name + " used " + attack.get("move") + "!")
         
         # if the move equals the opponents weakness, double the damage
+        print("Attack element: " + attack.get("element"))
+        print("Opponent weakness: " + player_pokemon.weakness)
         if attack.get("element") == player_pokemon.weakness:
             damage *= 2
         print("Damage dealt: " + str(damage) + " ✷")
@@ -259,6 +261,8 @@ def battle():
         print("\n" + player_pokemon.name + " used " + attack.get("move") + "!")
         
         # if the move equals the opponents weakness, double the damage
+        print("Attack element: " + attack.get("element"))
+        print("Opponent weakness: " + opponent.weakness)
         if attack.get("element") == opponent.weakness:
             damage *= 2
         print("Damage dealt: " + str(damage) + " ✷")
