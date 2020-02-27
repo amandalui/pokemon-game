@@ -221,8 +221,6 @@ def battle():
         print("\nOppposing " + opponent.name + " used " + attack.get("move") + "!")
         
         # if the move equals the opponents weakness, double the damage
-        print("Attack element: " + attack.get("element"))
-        print("Opponent weakness: " + player_pokemon.weakness)
         if attack.get("element") == player_pokemon.weakness:
             damage *= 2
         print("Damage dealt: " + str(damage) + " ✷")
@@ -261,8 +259,6 @@ def battle():
         print("\n" + player_pokemon.name + " used " + attack.get("move") + "!")
         
         # if the move equals the opponents weakness, double the damage
-        print("Attack element: " + attack.get("element"))
-        print("Opponent weakness: " + opponent.weakness)
         if attack.get("element") == opponent.weakness:
             damage *= 2
         print("Damage dealt: " + str(damage) + " ✷")
