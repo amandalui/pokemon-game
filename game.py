@@ -170,7 +170,6 @@ def main_menu():
         except ValueError:
             print(num_error)
 
-
 # Choose a starter pokemon
 
 def starter_poke():
