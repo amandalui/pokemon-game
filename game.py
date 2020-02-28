@@ -2,8 +2,7 @@ import random
 import time
 import sys
 
-from characters import Trainer
-from characters import Pokemon
+from characters import *
 
 HEALTH = 10
 
@@ -144,26 +143,54 @@ wild_pokemon = [
     tangela
 ]
 
+num_error = "\nPlease enter a number within range."
+
+# Main menu
+
+def main_menu():
+    global num_error
+    main_menu = ['Catch pokemon', 'Quit']
+    quit = "\nThanks for playing, " + player.name + "\n"
+    select = None
+    
+    print("\nWhat would you like to do:")
+    for x, value in enumerate(main_menu, 1):
+        print('[' + str(x) + '] ' + value)
+    
+    while (type(select) is not int) or (select not in range(1,3)):
+        try:
+            select = input("\n> ")
+            select = int(select)
+            if int(select) == (main_menu.index("Catch pokemon") + 1):
+                battle()
+            elif int(select) == (main_menu.index("Quit") + 1):
+                print(quit)
+            else:
+                print(num_error)
+        except ValueError:
+            print(num_error)
+
 
 # Choose a starter pokemon
 
 def starter_poke():
-    starter_choice = input("\n" + player.name +
-        ", choose a starter pokemon (type a number):" +
-        "\n[1] " + wild_pokemon[0].name + 
-        "\n[2] " + wild_pokemon[1].name +
-        "\n[3] " + wild_pokemon[2].name +
-        "\n[4] " + wild_pokemon[3].name +
-        "\n[5] " + wild_pokemon[4].name +
-        "\n[6] " + wild_pokemon[5].name +
-        "\n[7] " + wild_pokemon[6].name +
-        "\n[8] " + wild_pokemon[7].name +
-        "\n[9] " + wild_pokemon[8].name +
-        "\n[10] " + wild_pokemon[9].name +
-        "\n[11] " + wild_pokemon[10].name +
-        "\n[12] " + wild_pokemon[11].name + 
-        "\n > "
-    )
+    global num_error
+    starter_choice = None
+    
+    print("\n" + player.name +
+        ", choose a starter pokemon (type a number):")
+    
+    for x, value in enumerate(wild_pokemon, 1):
+        print('[' + str(x) + '] ' + value.name)
+    
+    while (type(starter_choice) is not int) or (starter_choice not in range(1,len(wild_pokemon)+1)):
+        try:
+            starter_choice = input("\n > ")
+            starter_choice = int(starter_choice)
+            if (starter_choice not in range(1,len(wild_pokemon)+1)):
+                print(num_error)
+        except ValueError:
+            print(num_error)
     
     for x, value in enumerate(wild_pokemon):
         if int(starter_choice) == (x + 1):
@@ -178,6 +205,7 @@ def wait():
         time.sleep(0.5)
 
 # Battle
+
 def battle():
     
     winner = None
@@ -193,17 +221,28 @@ def battle():
 
 
     def menu_pokedex():
+        global num_error
         nonlocal player_pokemon
+        select = None
         
         # Select a pokemon
         print("Which pokemon do you want to use?")
 
         # List the pokemon available in the Trainer's pokedex
-        for x, value in enumerate(Trainer.pokedex):
+        for x, value in enumerate(Trainer.pokedex, 1):
             if value.health > 0:
                 print("[" + str(x) + "]" + " " + value.name + ": " + str(value.health))
-
-        player_pokemon = Trainer.pokedex[int(input("> "))]
+        
+        while (type(select) is not int) or (select not in range(1,len(Trainer.pokedex)+1)):
+            try:
+                select = input("> ")
+                select = int(select)
+                if select in range(1,len(Trainer.pokedex)+1):
+                    player_pokemon = Trainer.pokedex[int(select) - 1]
+                else:
+                    print(num_error)
+            except ValueError:
+                print(num_error)
         print("\nGo get 'em " + player_pokemon.name + "! ◓")
         wait()
         player_attack()
@@ -218,7 +257,7 @@ def battle():
 
         attack = random.choice(opponent.attacks)
 
-        print("\nOppposing " + opponent.name + " used " + attack.get("move") + "!")
+        print("\nOppposing " + opponent.name + " used " + str.title(attack.get("move")) + "!")
         
         # if the move equals the opponents weakness, double the damage
         if attack.get("element") == player_pokemon.weakness:
@@ -242,21 +281,33 @@ def battle():
         
         
     def player_attack():
+        global num_error
         nonlocal player_pokemon
         nonlocal opponent
         nonlocal winner
+        select = None
         
         damage = random.randint(1, 5)
 
         print("\nChoose an attack:")
-        for x, value in enumerate(player_pokemon.attacks):
-            print("[" + str(x) + "] " + player_pokemon.attacks[int(x)].get("move"))
 
-        attack = player_pokemon.attacks[int(input("> "))]
+        for x, value in enumerate(player_pokemon.attacks, 1):
+            print('[' + str(x) + '] ' + str.title(value.get("move")))
+            
+        while type(select) is not int or (select not in range(1,len(player_pokemon.attacks)+1)):
+            try:
+                select = input("> ")
+                select = int(select)
+                if select in range(1,len(player_pokemon.attacks)+1):
+                    attack = player_pokemon.attacks[int(select) - 1]
+                else:
+                    print(num_error)
+            except ValueError:
+                print(num_error)
         
         wait()
 
-        print("\n" + player_pokemon.name + " used " + attack.get("move") + "!")
+        print("\n" + player_pokemon.name + " used " + str.title(attack.get("move")) + "!")
         
         # if the move equals the opponents weakness, double the damage
         if attack.get("element") == opponent.weakness:
@@ -278,23 +329,34 @@ def battle():
                 x.health = HEALTH
             
             if len(wild_pokemon) == 0:
-                print("◓ ◓ ◓ You caught 'em all! ◓ ◓ ◓ \nThanks for playing, " + player_name + "\n")
+                print("◓ ◓ ◓ You caught 'em all! ◓ ◓ ◓ \nThanks for playing, " + player.name + "\n")
             else:
                 main_menu()
 
 
     def menu_battle():
+        global num_error
+        choice = None
+        menu_battle = ['Fight', 'Switch pokemon', 'Run']
         
-        choice = input("\nWhat's your move? \n" +
-                        "[1] Fight \n" +
-                        "[2] Switch pokemon \n" +
-                        "[3] Run" +
-                        "\n> ")
-        if int(choice) == 1:
+        print("\nWhat's your move? \n")
+        for x, value in enumerate(menu_battle, 1):
+            print('[' + str(x) + '] ' + value)
+        
+        while (type(choice) is not int) or (choice not in range(1,len(menu_battle)+1)):
+            try:
+                choice = input("\n> ")
+                choice = int(choice)
+                if choice not in range(1,len(menu_battle)+1):
+                    print(num_error)
+            except ValueError:
+                print(num_error)
+                
+        if choice == menu_battle.index("Fight") + 1:
             player_attack()
-        elif int(choice) == 2:
+        elif choice == menu_battle.index("Switch pokemon") + 1:
             menu_pokedex()
-        elif int(choice) == 3:
+        elif choice == menu_battle.index("Run") + 1:
             winner = opponent
             opponent.health = 10
             print("\nYou got away safely.")
@@ -308,25 +370,15 @@ def battle():
     menu_pokedex()
     
 
-            
-# Main menu
 
-def main_menu():
-    select = input("\nWhat would you like to do: \n[1] Catch pokemon \n[2] Quit \n> ")
-    
-    quit = "\nThanks for playing, " + player_name + "\n"
-    
-    if int(select) == 1:
-        battle()
-    else:
-        print(quit)
 
 # The game
 
-player_name = input("\n-----------------------------------------------------------" + 
+print("\n-----------------------------------------------------------" + 
                     "\nϞϞ(๑⚈ ․̫ ⚈๑)∩  Welcome to the world of Pokemon! n(๑⚈ ․̫ ⚈๑)ϞϞ \n" + 
-                    "-----------------------------------------------------------" + 
-                    "\n\nWhat's your name? \n> ")
+                    "-----------------------------------------------------------")
+
+player_name = input("\n\nWhat's your name? \n> ")
 
 player = Trainer(player_name)
 
