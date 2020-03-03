@@ -12,5 +12,5 @@ class Pokemon:
         self.attacks = attacks
         
 def create_trainer():
-    player_name = input("\n\nWhat's your name? \n> ")
+    player_name = input('\n\nWhat\'s your name? \n> ')
     player = Trainer(player_name)
