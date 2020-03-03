@@ -295,8 +295,8 @@ def battle():
 
     def status():
         wait()
-        print('\nStatus: \n' + player_pokemon.name + ' health (' + str(player_pokemon.health) + ') : ' + ('🁢' * player_pokemon.health))
-        print('Opposing ' + opponent.name + ' health (' + str(opponent.health) + ') : ' + ('🁢' * opponent.health))
+        print('\nStatus: \n' + player_pokemon.name + ' health (' + str(player_pokemon.health) + ') : ' + (u'\U0001F062' * player_pokemon.health))
+        print('Opposing ' + opponent.name + ' health (' + str(opponent.health) + ') : ' + (u'\U0001F062' * opponent.health))
 
 
     def menu_pokedex():
@@ -310,7 +310,7 @@ def battle():
         # List the pokemon available in the Trainer's pokedex
         for x, value in enumerate(Trainer.pokedex, 1):
             if value.health > 0:
-                print('[' + str(x) + '] ' + value.name + ' (' + str(value.health) + ') : ' + ('🁢' * value.health))
+                print('[' + str(x) + '] ' + value.name + ' (' + str(value.health) + ') : ' + (u'\U0001F062' * value.health))
         
         while (type(select) is not int) or (select not in range(1,len(Trainer.pokedex)+1)):
             try:
