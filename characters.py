@@ -10,7 +10,3 @@ class Pokemon:
         self.element = element
         self.weakness = weakness
         self.attacks = attacks
-        
-def create_trainer():
-    player_name = input('\n\nWhat\'s your name? \n> ')
-    player = Trainer(player_name)

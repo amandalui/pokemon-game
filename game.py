@@ -54,7 +54,7 @@ charmander = Pokemon(
 squirtle = Pokemon(
     'Squirtle',
     HEALTH,
-    'fire',
+    'water',
     'grass',
     water_attacks)
 
@@ -334,7 +334,13 @@ def battle():
         
         damage = random.randint(1, 5)
 
-        attack = random.choice(opponent.attacks)
+        # if the pokemon has an advantage, always use the advantage attack
+        if opponent.element == player_pokemon.weakness:
+            for x, value in enumerate(opponent.attacks):
+                if value.get('element') == player_pokemon.weakness:
+                    attack = opponent.attacks[x]
+        else:
+            attack = random.choice(opponent.attacks)
 
         print('\nOppposing ' + opponent.name + ' used ' + str.title(attack.get('move')) + '!')
         
@@ -467,7 +473,6 @@ print('\n-----------------------------------------------------------' +
                     '-----------------------------------------------------------')
 
 player_name = input('\n\nWhat\'s your name? \n> ')
-
 player = Trainer(player_name)
 
 starter_poke()
