@@ -424,12 +424,51 @@ def battle():
                 print('◓ ◓ ◓ You caught \'em all! ◓ ◓ ◓ \nThanks for playing, ' + player.name + '\n')
             else:
                 main_menu()
+                
+    def throw_pokeball():
+        health_percent = opponent.health / float(HEALTH)
+        success_rate = None
+        roll = random.randrange(1,11)
+        fail_message = '\nDarn, it got loose...'
+        catch_message = '\nNice! You caught ' + opponent.name + '! \n'
+        
+        print('\nYou threw a pokeball at ' + opponent.name + '! ◓')
+        
+        wait()
+        
+        def catch():
+            print(catch_message)
+            Trainer.pokedex.append(wild_pokemon.pop(wild_pokemon.index(opponent)))
+            for x in Trainer.pokedex:
+                x.health = HEALTH
+            wait()
+
+        if health_percent <= 0.2:
+            catch()
+            main_menu() 
+        elif health_percent < 0.5:
+            if roll >= 7:
+                print(fail_message)
+                wait()
+                opponent_attack()
+            else:
+                catch()
+                main_menu()
+        elif health_percent >= 0.5:
+            if roll > 3:
+                print(fail_message)
+                wait()
+                opponent_attack()
+            else:
+                catch()
+                main_menu()
+                
 
 
     def menu_battle():
         global num_error
         choice = None
-        menu_battle = ['Fight', 'Switch pokemon', 'Run']
+        menu_battle = ['Fight', 'Switch pokemon', 'Throw pokeball', 'Run']
         
         print('\nWhat\'s your move? \n')
         display_list(menu_battle)
@@ -447,6 +486,8 @@ def battle():
             player_attack()
         elif choice == menu_battle.index('Switch pokemon') + 1:
             menu_pokedex()
+        elif choice == menu_battle.index('Throw pokeball') + 1:
+            throw_pokeball()
         elif choice == menu_battle.index('Run') + 1:
             winner = opponent
             opponent.health = 10
