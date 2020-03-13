@@ -423,7 +423,7 @@ def battle():
             winner = player_pokemon
             print('\nOpposing ' + opponent.name + ' fainted.')
             print('\n==============================================' + 
-                  '\nYou caught ' + opponent.name + '!' +
+                  '\nYou caught ' + opponent.name + '! ◓' +
                   '\n==============================================')
             Trainer.pokedex.append(wild_pokemon.pop(wild_pokemon.index(opponent)))
             for x in Trainer.pokedex:
@@ -437,7 +437,7 @@ def battle():
         fail_message = '\nDarn, it got loose...'
         catch_message = ('\nNice! \n' + 
                          '\n==============================================' + 
-                         '\nYou caught ' + opponent.name + '!' +
+                         '\nYou caught ' + opponent.name + '! ◓' +
                          '\n==============================================')
         
         print('\nYou threw a pokeball at ' + opponent.name + '! ◓')
