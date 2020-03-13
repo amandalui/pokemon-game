@@ -171,26 +171,33 @@ def main_menu():
     global num_error
     main_menu = ['Catch pokemon', 'Open pokedex', 'Quit']
     quit = '\nThanks for playing, ' + player.name + '.\n'
+    win = ('\n◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓' + 
+           '\nYou caught \'em all!' +
+           '\n◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓ ◓' +
+           '\n\nThanks for playing, ' + player.name + '.')
     select = None
     
-    print('\nWhat would you like to do:')
-    display_list(main_menu)
-    
-    while (type(select) is not int) or (select not in range(1,3)):
-        try:
-            select = input('\n> ')
-            select = int(select)
-            if int(select) == (main_menu.index('Catch pokemon') + 1):
-                battle()
-            elif int(select) == (main_menu.index('Open pokedex') + 1):
-                pokedex_menu()
-            elif int(select) == (main_menu.index('Quit') + 1):
-                print(quit)
-                break
-            else:
+    if len(wild_pokemon) == 0:
+        print(win)
+    else:
+        print('\nWhat would you like to do:')
+        display_list(main_menu)
+
+        while (type(select) is not int) or (select not in range(1,3)):
+            try:
+                select = input('\n> ')
+                select = int(select)
+                if int(select) == (main_menu.index('Catch pokemon') + 1):
+                    battle()
+                elif int(select) == (main_menu.index('Open pokedex') + 1):
+                    pokedex_menu()
+                elif int(select) == (main_menu.index('Quit') + 1):
+                    print(quit)
+                    break
+                else:
+                    print(num_error)
+            except ValueError:
                 print(num_error)
-        except ValueError:
-            print(num_error)
 
 # Display pokedex
 def display_pokedex():
@@ -295,8 +302,8 @@ def battle():
 
     def status():
         wait()
-        print('\nStatus: \n' + player_pokemon.name + ' health (' + str(player_pokemon.health) + ') : ' + (u'\U0001F062' * player_pokemon.health))
-        print('Opposing ' + opponent.name + ' health (' + str(opponent.health) + ') : ' + (u'\U0001F062' * opponent.health))
+        print('\nStatus: \n' + player_pokemon.name + ' health (' + str(player_pokemon.health) + ') : ' + (u'\u2665' * player_pokemon.health))
+        print('Opposing ' + opponent.name + ' health (' + str(opponent.health) + ') : ' + (u'\u2665' * opponent.health))
 
 
     def menu_pokedex():
@@ -310,7 +317,7 @@ def battle():
         # List the pokemon available in the Trainer's pokedex
         for x, value in enumerate(Trainer.pokedex, 1):
             if value.health > 0:
-                print('[' + str(x) + '] ' + value.name + ' (' + str(value.health) + ') : ' + (u'\U0001F062' * value.health))
+                print('[' + str(x) + '] ' + value.name + ' (' + str(value.health) + ') : ' + (u'\u2665' * value.health))
         
         while (type(select) is not int) or (select not in range(1,len(Trainer.pokedex)+1)):
             try:
@@ -415,22 +422,23 @@ def battle():
         elif opponent.health <= 0:
             winner = player_pokemon
             print('\nOpposing ' + opponent.name + ' fainted.')
-            print('You caught ' + opponent.name + '! \n')
+            print('\n==============================================' + 
+                  '\nYou caught ' + opponent.name + '!' +
+                  '\n==============================================')
             Trainer.pokedex.append(wild_pokemon.pop(wild_pokemon.index(opponent)))
             for x in Trainer.pokedex:
                 x.health = HEALTH
-            
-            if len(wild_pokemon) == 0:
-                print('◓ ◓ ◓ You caught \'em all! ◓ ◓ ◓ \nThanks for playing, ' + player.name + '\n')
-            else:
-                main_menu()
+            main_menu()
                 
     def throw_pokeball():
         health_percent = opponent.health / float(HEALTH)
         success_rate = None
         roll = random.randrange(1,11)
         fail_message = '\nDarn, it got loose...'
-        catch_message = '\nNice! You caught ' + opponent.name + '! \n'
+        catch_message = ('\nNice! \n' + 
+                         '\n==============================================' + 
+                         '\nYou caught ' + opponent.name + '!' +
+                         '\n==============================================')
         
         print('\nYou threw a pokeball at ' + opponent.name + '! ◓')
         
@@ -497,8 +505,8 @@ def battle():
 
     wait()
     
-    print('\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' + 
-          '\nYou encountered a wild ' + opponent.name + '!\n' + 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    print('\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' + 
+          '\nYou encountered a wild ' + opponent.name + '!\n' + 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
     
     wait()
 
