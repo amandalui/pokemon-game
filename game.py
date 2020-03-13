@@ -340,6 +340,16 @@ def battle():
         nonlocal winner
         
         damage = random.randint(1, 5)
+        poke_alive = 0
+        
+        def poke_alive():
+            nonlocal poke_alive
+            count = 0
+            for x, value in enumerate(Trainer.pokedex):
+                if value.health > 0:
+                    count += 1
+                poke_alive = count
+
 
         # if the pokemon has an advantage, always use the advantage attack
         if opponent.element == player_pokemon.weakness:
@@ -363,13 +373,14 @@ def battle():
         status()
         
         wait()
+        poke_alive()
         
         if player_pokemon.health > 0:
             menu_battle()
-        elif player_pokemon.health <= 0 and len(Trainer.pokedex) > 1:
+        elif player_pokemon.health <= 0 and poke_alive > 0:
             print('\n' + player_pokemon.name + ' fainted.\n')
             menu_pokedex()
-        elif player_pokemon.health <= 0:
+        elif player_pokemon.health <= 0 and poke_alive <= 0:
             winner = opponent
             print('\n' + player_pokemon.name + ' fainted.')
             print('Game over... \n')
